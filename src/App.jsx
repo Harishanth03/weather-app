@@ -21,6 +21,7 @@ import wind from './assets/wind.png';
 
 const WeatherDetails = ({icon , temp , city , country , lat , log , humidity , windSpeed}) => 
 {
+
   return (
 
     <>
@@ -84,6 +85,14 @@ const WeatherDetails = ({icon , temp , city , country , lat , log , humidity , w
   );
 }
 
+//=====================================================================================================================================
+
+const searchUrl = async () => 
+{
+  let URL = "https://api.openweathermap.org/data/2.5/weather?q=Trincomalee&appid=5efa0145cbf2f2c74cc1ea3975b1e2e0&units=Metric";
+  console.log(URL);
+}
+
 const App = () => {
 
   const [icon , setIcon] = useState(snowImage);
@@ -102,6 +111,8 @@ const App = () => {
 
   const [windSpeed , setWindSpeed] = useState(5);
 
+  
+
   return (
     
     <div className="container">
@@ -114,11 +125,16 @@ const App = () => {
           <img src={searchIcon} alt="search" />
         </div>
 
+       
+
       </div>      
       <WeatherDetails icon={icon} temp={temp} city={city} country={country} lat={lat} log={log} humidity={humidity} windSpeed={windSpeed}/>
     </div>
+    
 
-  )
+    
+
+  );
 }
 
 export default App
