@@ -17,7 +17,9 @@ import rainImage from './assets/rain.png';
 
 import snowImage from './assets/snow.png';
 
-const WeatherDetails = ({icon , temp , city , country , lat , log}) => 
+import wind from './assets/wind.png';
+
+const WeatherDetails = ({icon , temp , city , country , lat , log , humidity , windSpeed}) => 
 {
   return (
 
@@ -49,8 +51,30 @@ const WeatherDetails = ({icon , temp , city , country , lat , log}) =>
 
           <span className="log">Logtitude</span>
 
-          <span>{lat}</span>
+          <span>{log}</span>
 
+        </div>
+
+      </div>
+
+      <div className="data-container">
+
+        <div className="element">
+
+          <img src={dropImage} alt="humidity" className='icon'/>
+
+          <div className="humility-percentage">{humidity}%</div>
+
+          <div className="text">Humidity</div>
+        </div>
+
+        <div className="element">
+
+          <img src={wind} alt="wind" className='icon'/>
+
+          <div className="humility-percentage">{windSpeed} km/h</div>
+
+          <div className="text">Wind Speed</div>
         </div>
 
       </div>
@@ -72,7 +96,11 @@ const App = () => {
 
   const [lat , setLat] = useState(0);
 
-  const [log , setLog] = useState(0)
+  const [log , setLog] = useState(0);
+
+  const [humidity , setHumidity] = useState(85);
+
+  const [windSpeed , setWindSpeed] = useState(5);
 
   return (
     
@@ -87,7 +115,7 @@ const App = () => {
         </div>
 
       </div>      
-      <WeatherDetails icon={icon} temp={temp} city={city} country={country} lat={lat} log={log}/>
+      <WeatherDetails icon={icon} temp={temp} city={city} country={country} lat={lat} log={log} humidity={humidity} windSpeed={windSpeed}/>
     </div>
 
   )
