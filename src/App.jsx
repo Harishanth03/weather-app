@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import './App.css'
 
-/* Images */
+/* Images ========================================================================================================================= */
 import searchIcon from './assets/search.png';
 
 import sunImage from './assets/sun.png'
@@ -18,6 +18,8 @@ import rainImage from './assets/rain.png';
 import snowImage from './assets/snow.png';
 
 import wind from './assets/wind.png';
+
+//============================================= Create a function for Weather Details ==============================================
 
 const WeatherDetails = ({icon , temp , city , country , lat , log , humidity , windSpeed}) => 
 {
@@ -85,15 +87,10 @@ const WeatherDetails = ({icon , temp , city , country , lat , log , humidity , w
   );
 }
 
-//=====================================================================================================================================
-
-const searchUrl = async () => 
-{
-  let URL = "https://api.openweathermap.org/data/2.5/weather?q=Trincomalee&appid=5efa0145cbf2f2c74cc1ea3975b1e2e0&units=Metric";
-  console.log(URL);
-}
-
+//===================================================== Main App Function ============================================================
 const App = () => {
+
+  const [text , setText] = useState("Trincomalee");
 
   const [icon , setIcon] = useState(snowImage);
 
@@ -111,7 +108,78 @@ const App = () => {
 
   const [windSpeed , setWindSpeed] = useState(5);
 
-  
+  const [cityNotFound , setCityNotFound] = useState(false);
+
+  const [loading , setLoading] = useState(false);
+
+
+  //================================================== Search API url ===============================================================
+
+  const searchUrl = async () => 
+  {
+    setLoading(true);
+
+    let URL = `https://api.openweathermap.org/data/2.5/weather?q=${text}&appid=5efa0145cbf2f2c74cc1ea3975b1e2e0&units=Metric`;
+    
+    try
+    {
+      let response = await fetch(URL);
+
+      let responseData = await response.json();
+
+      console.log(responseData);
+
+      if(responseData.cod === "404")
+      {
+
+        setCityNotFound(true);
+
+        setLoading(false);
+
+        return;
+
+      }
+
+      setCity(responseData.name);
+     
+      setHumidity(responseData.main.humidity);
+
+      setTemp(Math.floor(responseData.main.temp));
+
+      setCountry(responseData.sys.country);
+
+      setLat(responseData.coord.lat);
+
+      setLog(responseData.coord.lon);
+
+      setWindSpeed(responseData.wind.speed)
+
+    }
+    catch(error)
+    {
+      console.error("The Error is: ", error.message);
+    }
+    finally
+    {
+      setLoading(false);
+    }
+  }
+
+  //================================================== Enter key Function =============================================================
+
+  const handleKeyDown = (e) => 
+  {
+    if(e.key === "Enter")
+    {
+      searchUrl();
+    }
+  }
+    
+  //================================================== get City name from Text box ====================================================
+  const getCityName = (e) => 
+  {
+    setText(e.target.value)
+  }
 
   return (
     
@@ -119,16 +187,18 @@ const App = () => {
 
       <div className="input-container">
 
-        <input type="text" className='city-input' placeholder='Search City'/>
+        <input type="text" className='city-input' placeholder='Search City' onChange={getCityName} value={text} onKeyDown={handleKeyDown}/>
 
-        <div className="search-icon">
+        <div className="search-icon" onClick={() => {searchUrl()}}>
+
           <img src={searchIcon} alt="search" />
+
         </div>
 
-       
+      </div>
 
-      </div>      
       <WeatherDetails icon={icon} temp={temp} city={city} country={country} lat={lat} log={log} humidity={humidity} windSpeed={windSpeed}/>
+
     </div>
     
 
