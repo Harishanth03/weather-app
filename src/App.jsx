@@ -1,23 +1,64 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import './App.css'
+
+//================================================= use effect =====================================================================
+
 
 /* Images ========================================================================================================================= */
 import searchIcon from './assets/search.png';
 
-import sunImage from './assets/sun.png'
+import brokenClouds from './assets/brokenClouds.png';
 
-import cloudImage from './assets/cloud.png';
+import clearSkyDay from './assets/clearSkyDay.png';
+
+import clearSkyNight from './assets/clearSkyNight.png';
+
+import fewCloudsDay from './assets/fewCoudsDay.png';
+
+import fewCloudsNight from './assets/fewCoudsNight.png';
+
+import mist from './assets/mist.png';
+
+import rainDay from './assets/rainDay.png';
+
+import rainNight from './assets/rainNight.png';
+
+import scatteredClouds from  './assets/scatteredClouds.png';
+
+import showerRain from './assets/showerRain.png';
+
+import snow from './assets/snow.png';
 
 import dropImage from './assets/drop.png';
 
-import dropImage2 from './assets/drop2.png';
-
-import rainImage from './assets/rain.png';
-
-import snowImage from './assets/snow.png';
-
 import wind from './assets/wind.png';
+
+import thunderStrom from './assets/thunderStorm.png';
+
+//=================================================================================================================================
+
+const weatherIconMap = 
+{
+  '01d' : clearSkyDay,
+  '01n' : clearSkyNight,
+  '02d' : fewCloudsDay,
+  '02n' : fewCloudsNight,
+  '03d' : scatteredClouds,
+  '03n' : scatteredClouds,
+  '04d' : brokenClouds,
+  '04n' : brokenClouds,
+  '09d' : showerRain,
+  '09n' : showerRain,
+  '10d' : rainDay,
+  '10n' : rainNight,
+  '11d' : thunderStrom,
+  '11n' : thunderStrom,
+  '13d' : snow,
+  '13n' : snow,
+  '50d' : mist,
+  '50n' : mist
+} 
 
 //============================================= Create a function for Weather Details ==============================================
 
@@ -92,7 +133,7 @@ const App = () => {
 
   const [text , setText] = useState("Trincomalee");
 
-  const [icon , setIcon] = useState(snowImage);
+  const [icon , setIcon] = useState(snow);
 
   const [temp , setTemp] = useState(0);
 
@@ -129,6 +170,8 @@ const App = () => {
 
       console.log(responseData);
 
+      console.log({icon , temp , city , country , lat , log , humidity , windSpeed});
+
       if(responseData.cod === "404")
       {
 
@@ -152,7 +195,11 @@ const App = () => {
 
       setLog(responseData.coord.lon);
 
-      setWindSpeed(responseData.wind.speed)
+      setWindSpeed(responseData.wind.speed);
+
+      const weatherIconNumber = responseData.weather[0].icon;
+
+      setIcon(weatherIconMap[weatherIconNumber] || mist);
 
     }
     catch(error)
@@ -173,7 +220,14 @@ const App = () => {
     {
       searchUrl();
     }
-  }
+  };
+
+  useEffect(function (){
+
+    searchUrl();
+  
+  }, []);
+  
     
   //================================================== get City name from Text box ====================================================
   const getCityName = (e) => 

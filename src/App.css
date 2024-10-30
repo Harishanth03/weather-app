@@ -73,7 +73,8 @@ body
 .images img
 {
     margin: 20px 0px;
-    width: 100px;
+    width: 150px;
+    height: 150px;
 }
 
 .temp , .location , .country
