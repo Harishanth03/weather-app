@@ -137,9 +137,9 @@ const App = () => {
 
   const [temp , setTemp] = useState(0);
 
-  const [city , setCity] = useState("Trincomalee");
+  const [city , setCity] = useState();
 
-  const [country , setCountry] = useState("Sri Lanka");
+  const [country , setCountry] = useState();
 
   const [lat , setLat] = useState(0);
 
